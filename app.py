@@ -1,9 +1,3 @@
-pip install streamlit duckduckgo-search
-
-!wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
-!chmod +x cloudflared
-
-code = """
 import streamlit as st
 from duckduckgo_search import DDGS
 
@@ -14,16 +8,9 @@ query = st.text_input("Your Search Query:")
 
 if st.button("Search") and query:
     st.write(f"Searching DuckDuckGo for: '{query}'")
-
+    
     with DDGS() as ddgs:
         results = ddgs.text(query, max_results=5)
         for idx, r in enumerate(results, start=1):
             st.markdown(f"**{idx}. [{r['title']}]({r['href']})**")
             st.write(r['body'])
-"""
-with open("duckduckgo_agent.py", "w") as f:
-    f.write(code)
-
-print("✅ duckduckgo_agent.py has been created.")
-
-!streamlit run duckduckgo_agent.py & sleep 5 && ./cloudflared tunnel --url http://localhost:8501
