@@ -1,16 +1,29 @@
-# Paste ALL your code here in order (imports first, then functions, then main app)
-# Example:
-from flask import Flask
-import pandas as pd
+pip install streamlit duckduckgo-search
 
-def my_function():
-    return "Hello World"
+!wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
+!chmod +x cloudflared
 
-app = Flask(__name__)
+code = """
+import streamlit as st
+from duckduckgo_search import DDGS
 
-@app.route('/')
-def home():
-    return my_function()
+st.title("DuckDuckGo Search Agent")
+st.write("Enter a query below and get search results from DuckDuckGo.")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+query = st.text_input("Your Search Query:")
+
+if st.button("Search") and query:
+    st.write(f"Searching DuckDuckGo for: '{query}'")
+
+    with DDGS() as ddgs:
+        results = ddgs.text(query, max_results=5)
+        for idx, r in enumerate(results, start=1):
+            st.markdown(f"**{idx}. [{r['title']}]({r['href']})**")
+            st.write(r['body'])
+"""
+with open("duckduckgo_agent.py", "w") as f:
+    f.write(code)
+
+print("✅ duckduckgo_agent.py has been created.")
+
+!streamlit run duckduckgo_agent.py & sleep 5 && ./cloudflared tunnel --url http://localhost:8501
