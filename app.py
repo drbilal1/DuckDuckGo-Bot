@@ -1,5 +1,5 @@
 import streamlit as st
-#from duckduckgo_search import DDGS
+from duckduckgo_search import DDGS
 
 st.title("DuckDuckGo Search Agent")
 st.write("Enter a query below and get search results from DuckDuckGo.")
