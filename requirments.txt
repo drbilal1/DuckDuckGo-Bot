@@ -3,5 +3,6 @@ langchain-google-genai
 pypdf
 faiss-cpu
 python-dotenv
-streamlit>=1.28.0
-duckduckgo-search>=4.1.0
+streamlit
+duckduckgo-search
+
